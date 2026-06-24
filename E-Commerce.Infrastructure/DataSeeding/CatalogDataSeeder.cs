@@ -25,9 +25,16 @@ namespace E_Commerce.Infrastructure.DataSeeding
 
                 var seedRoot = Path.Combine(AppContext.BaseDirectory, "DataSeed");
 
-                await SeedIfEmptyAsync<ProductBrand, int>(seedRoot, "products.json", ct);
-                await SeedIfEmptyAsync<ProductType, int>(seedRoot, "brands.json", ct);
-                await SeedIfEmptyAsync<Product, int>(seedRoot, "type.json", ct);
+                await SeedIfEmptyAsync<ProductBrand, int>(seedRoot, "brands.json", ct);
+                await SeedIfEmptyAsync<ProductType, int>(seedRoot, "type.json", ct);
+                await SeedIfEmptyAsync<Product, int>(seedRoot, "products.json", ct);
+
+                int result = await dbContext.SaveChangesAsync(ct);
+                if (result > 0)
+                    logger.LogInformation($"{result} Rows Added");
+                else
+                    logger.LogInformation($"DataBAse already saved");
+                        
             }
             catch { }
         }

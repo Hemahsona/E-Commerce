@@ -1,11 +1,13 @@
 
+using E_Commerce.API.Extentions;
+using E_Commerce.Domain.Contract;
 using E_Commerce.Infrastructure.Dependencies;
 
 namespace E_Commerce.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +20,10 @@ namespace E_Commerce.API
             builder.Services.AddOpenApi();
 
             var app = builder.Build();
-
+            app.SeedAndMigrationData();
+            //using var scope = app.Services.CreateScope();
+            //var seeder = scope.ServiceProvider.GetRequiredKeyedService<IDataSeeder>("Catalog");
+            //await seeder.SeedDataAsync();
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
