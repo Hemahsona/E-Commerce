@@ -18,12 +18,12 @@ namespace E_Commerce.API
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+            //builder.Services.AddSwaggerGen();
+
 
             var app = builder.Build();
             app.SeedAndMigrationData();
-            //using var scope = app.Services.CreateScope();
-            //var seeder = scope.ServiceProvider.GetRequiredKeyedService<IDataSeeder>("Catalog");
-            //await seeder.SeedDataAsync();
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
