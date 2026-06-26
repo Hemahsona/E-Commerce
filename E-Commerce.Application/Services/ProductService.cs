@@ -10,9 +10,9 @@ using System.Text;
 
 namespace E_Commerce.Application.Services
 {
-    internal class ProductService(IUnitOfWork unitOfWork) : IProductService
+    internal class ProductService(IUnitOfWork unitOfWork, IUrlService urlService) : IProductService
     {
-        public async Task<Result<IEnumerable<ProductDTO>>> GetAllAsync(CancellationToken ct)
+        public async Task<Result<IReadOnlyList<ProductDTO>>> GetAllAsync(CancellationToken ct)
         {
             var products = await unitOfWork.Repository<Product, int>().GetAllAsync(ct);
             var result = products.Select(product => new ProductDTO
@@ -20,36 +20,36 @@ namespace E_Commerce.Application.Services
                 Id = product.id,
                 Name = product.Name,
                 Description = product.Description,
-                PictureUrl = product.PictureUrl,
+                PictureUrl = urlService.GetImageUrl(product.PictureUrl),
                 Price = product.Price,
-                ProductBrand = product.Brand.Name,
-                ProductType = product.Type.Name,
-            });
-            return Result<IEnumerable<ProductDTO>>.Ok(result);
+                ProductBrand = product.Brand?.Name,
+                ProductType = product.Type?.Name,
+            }).ToList();
+            return Result<IReadOnlyList<ProductDTO>>.Ok(result);
         }
         
 
-        public async Task<Result<IEnumerable<BrandDTOs>>> GetAllBrandsAsync(CancellationToken ct)
+        public async Task<Result<IReadOnlyList<BrandDTOs>>> GetAllBrandsAsync(CancellationToken ct)
         {
             var brands = await unitOfWork.Repository<ProductBrand, int>().GetAllAsync(ct);
             var result = brands.Select(brand => new BrandDTOs
             {
                 Id = brand.id,
                 Name = brand.Name,
-            });
-            return Result<IEnumerable<BrandDTOs>>.Ok(result);
+            }).ToList();
+            return Result<IReadOnlyList<BrandDTOs>>.Ok(result);
         }
         
 
-        public async Task<Result<IEnumerable<TypeDTOs>>> GetAllTypesAsync(CancellationToken ct)
+        public async Task<Result<IReadOnlyList<TypeDTOs>>> GetAllTypesAsync(CancellationToken ct)
         {
             var types = await unitOfWork.Repository<ProductType, int>().GetAllAsync(ct);
             var result = types.Select(type => new TypeDTOs
             {
                 Id = type.id,
                 Name = type.Name,
-            });
-            return Result<IEnumerable<TypeDTOs>>.Ok(result);
+            }).ToList();
+            return Result<IReadOnlyList<TypeDTOs>>.Ok(result);
         }
 
         public async Task<Result<ProductDTO>> GetByIdAsync(int id, CancellationToken ct)

@@ -1,7 +1,9 @@
 
 using E_Commerce.API.Extentions;
+using E_Commerce.Application.Dependencies;
 using E_Commerce.Domain.Contract;
 using E_Commerce.Infrastructure.Dependencies;
+using Microsoft.Extensions.FileProviders;
 
 namespace E_Commerce.API
 {
@@ -13,8 +15,9 @@ namespace E_Commerce.API
 
             // Add services to the container.
 
-
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddInfrastructue(builder.Configuration);
+            builder.Services.AddAppliction();
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
@@ -29,6 +32,12 @@ namespace E_Commerce.API
             {
                 app.MapOpenApi();
             }
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                Path.Combine(builder.Environment.ContentRootPath, "Files")),
+                RequestPath = "/Files"
+            });
 
             app.UseHttpsRedirection();
 

@@ -1,4 +1,6 @@
-﻿namespace E_Commerce.Application.Common
+﻿using System.Text.Json.Serialization;
+
+namespace E_Commerce.Application.Common
 {
     public sealed record Error(string Code, string Description, ErrorType ErrorType = ErrorType.Failure)
     {
@@ -37,6 +39,7 @@
             string description = "The request is invalid.")
             => new(code, description, ErrorType.Invalid);
     }
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum ErrorType
     {
         Failure = 0,
