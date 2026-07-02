@@ -6,7 +6,7 @@ namespace E_Commerce.Domain.Entities
 {
     public abstract class BaseEntity<TKey>
     {
-        public TKey id { get; set; } = default!;
+        public TKey Id { get; set; } = default!;
         public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }

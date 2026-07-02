@@ -2,6 +2,7 @@
 using E_Commerce.Application.Contract;
 using E_Commerce.Application.DTOs;
 using E_Commerce.Application.Services;
+using E_Commerce.Application.Specifications;
 using E_Commerce.Domain.Contract.IRepositories;
 using E_Commerce.Domain.Entities.Products;
 using System;
@@ -12,12 +13,13 @@ namespace E_Commerce.Application.Services
 {
     internal class ProductService(IUnitOfWork unitOfWork, IUrlService urlService) : IProductService
     {
-        public async Task<Result<IReadOnlyList<ProductDTO>>> GetAllAsync(CancellationToken ct)
+        public async Task<Result<PaginatedResult<ProductDTO>>> GetAllAsync(ProductQueryPramas queryPramas, CancellationToken ct)
         {
-            var products = await unitOfWork.Repository<Product, int>().GetAllAsync(ct);
-            var result = products.Select(product => new ProductDTO
+            var spec = new ProductWithTypeAndBrandSpec(queryPramas);
+            var products = await unitOfWork.Repository<Product, int>().GetAllAsync(spec, ct);
+            var data = products.Select(product => new ProductDTO
             {
-                Id = product.id,
+                Id = product.Id,
                 Name = product.Name,
                 Description = product.Description,
                 PictureUrl = urlService.GetImageUrl(product.PictureUrl),
@@ -25,7 +27,10 @@ namespace E_Commerce.Application.Services
                 ProductBrand = product.Brand?.Name,
                 ProductType = product.Type?.Name,
             }).ToList();
-            return Result<IReadOnlyList<ProductDTO>>.Ok(result);
+            var countSpec = new ProductCountSpecifications(queryPramas);
+            var countAllProducts = await unitOfWork.Repository<Product, int>().CountAsync(countSpec, ct);
+            var result = new PaginatedResult<ProductDTO>(queryPramas.PageIndex, queryPramas.PageSize, countAllProducts, data);        
+            return Result<PaginatedResult<ProductDTO>>.Ok(result);
         }
         
 
@@ -34,7 +39,7 @@ namespace E_Commerce.Application.Services
             var brands = await unitOfWork.Repository<ProductBrand, int>().GetAllAsync(ct);
             var result = brands.Select(brand => new BrandDTOs
             {
-                Id = brand.id,
+                Id = brand.Id,
                 Name = brand.Name,
             }).ToList();
             return Result<IReadOnlyList<BrandDTOs>>.Ok(result);
@@ -46,7 +51,7 @@ namespace E_Commerce.Application.Services
             var types = await unitOfWork.Repository<ProductType, int>().GetAllAsync(ct);
             var result = types.Select(type => new TypeDTOs
             {
-                Id = type.id,
+                Id = type.Id,
                 Name = type.Name,
             }).ToList();
             return Result<IReadOnlyList<TypeDTOs>>.Ok(result);
@@ -54,12 +59,13 @@ namespace E_Commerce.Application.Services
 
         public async Task<Result<ProductDTO>> GetByIdAsync(int id, CancellationToken ct)
         {
-            var product = await unitOfWork.Repository<Product, int>().GetByIdAsync(id, ct);
+            var spec = new ProductWithTypeAndBrandSpec(id);
+            var product = await unitOfWork.Repository<Product, int>().GetByIdAsync(spec, ct);
             if (product == null)
                 return Error.NotFound("Product Not Found", $"Product with id {id} Is not Found");
             var result = new ProductDTO
             {
-                Id = product.id,
+                Id = product.Id,
                 Name = product.Name,
                 Description = product.Description,
                 PictureUrl = product.PictureUrl,

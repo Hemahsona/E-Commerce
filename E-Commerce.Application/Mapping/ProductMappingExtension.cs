@@ -13,7 +13,7 @@ namespace E_Commerce.Application.Mapping
         {
             return new ProductDTO
             {
-                Id = product.id,
+                Id = product.Id,
                 Name = product.Name,
                 Description = product.Description,
                 PictureUrl = product.PictureUrl,
