@@ -1,5 +1,5 @@
 ﻿using E_Commerce.Application.Common;
-using E_Commerce.Application.DTOs;
+using E_Commerce.Application.DTOs.Products;
 using System;
 using System.Collections.Generic;
 using System.Text;

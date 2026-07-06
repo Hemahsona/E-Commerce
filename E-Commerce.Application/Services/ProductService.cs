@@ -1,6 +1,6 @@
 ﻿using E_Commerce.Application.Common;
 using E_Commerce.Application.Contract;
-using E_Commerce.Application.DTOs;
+using E_Commerce.Application.DTOs.Products;
 using E_Commerce.Application.Services;
 using E_Commerce.Application.Specifications;
 using E_Commerce.Domain.Contract.IRepositories;

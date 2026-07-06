@@ -9,6 +9,7 @@ namespace E_Commerce.Application.Dependencies
         public static IServiceCollection AddAppliction(this IServiceCollection services)
         {
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IBasketService, BasketService>();
             return services;
         }
     }

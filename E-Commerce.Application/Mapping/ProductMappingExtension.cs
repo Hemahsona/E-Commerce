@@ -1,4 +1,4 @@
-﻿using E_Commerce.Application.DTOs;
+﻿using E_Commerce.Application.DTOs.Products;
 using E_Commerce.Domain.Entities.Products;
 using System;
 using System.Collections.Generic;

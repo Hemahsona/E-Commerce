@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 using E_Commerce.Application.Contract;
-using E_Commerce.Application.DTOs;
 using E_Commerce.Application.Common;
+using E_Commerce.Application.DTOs.Products;
 
 namespace E_Commerce.API.Controllers
 {
