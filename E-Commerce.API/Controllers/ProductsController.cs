@@ -3,6 +3,7 @@
 using E_Commerce.Application.Contract;
 using E_Commerce.Application.Common;
 using E_Commerce.Application.DTOs.Products;
+using E_Commerce.API.Attributes;
 
 namespace E_Commerce.API.Controllers
 {
@@ -10,6 +11,7 @@ namespace E_Commerce.API.Controllers
     public class ProductsController(IProductService product) : ApiBaseController
     {
         [HttpGet]
+        [RedisCache(2)]
         public async Task<ActionResult<PaginatedResult<ProductDTO>>> GetAll([FromQuery] ProductQueryPramas queryPramas, CancellationToken ct)
         {
             var result = await product.GetAllAsync(queryPramas, ct);
