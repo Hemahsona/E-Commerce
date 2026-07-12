@@ -27,11 +27,11 @@ namespace E_Commerce.Application.Common
         { 
             _value = value;
         }
-        private Result(Error error) : base(true, Array.Empty<Error>())
+        private Result(Error error) : base(false, new[] {error} )
         {
             _value = default!;
         }
-        private Result(IReadOnlyList<Error> errors) : base(true, Array.Empty<Error>())
+        private Result(IReadOnlyList<Error> errors) : base(false, errors)
         {
             _value = default!;
         }
