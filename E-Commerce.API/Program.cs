@@ -3,6 +3,9 @@ using E_Commerce.API.Extentions;
 using E_Commerce.Application.Dependencies;
 using E_Commerce.Domain.Contract;
 using E_Commerce.Infrastructure.Dependencies;
+using E_Commerce.Infrastructure.Identity.Entity;
+using E_Commerce.Infrastructure.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 
 namespace E_Commerce.API
@@ -19,9 +22,12 @@ namespace E_Commerce.API
             builder.Services.AddInfrastructue(builder.Configuration);
             builder.Services.AddAppliction();
             builder.Services.AddControllers();
+
+            builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JWT"));
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+            //builder.Services.AddOpenApi();
             //builder.Services.AddSwaggerGen();
+
 
 
             var app = builder.Build();
@@ -30,7 +36,7 @@ namespace E_Commerce.API
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.MapOpenApi();
+                //app.MapOpenApi();
             }
             app.UseStaticFiles(new StaticFileOptions
             {
@@ -40,6 +46,8 @@ namespace E_Commerce.API
             });
 
             app.UseHttpsRedirection();
+
+
 
             app.UseAuthorization();
 

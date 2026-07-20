@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using E_Commerce.Application.Common;
+﻿using E_Commerce.Application.Common;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace E_Commerce.API.Controllers
 {
@@ -44,5 +45,8 @@ namespace E_Commerce.API.Controllers
             };
             return new ObjectResult(problem) { StatusCode = statusCode};
         }
+
+        protected string GetCurrentUserEmail()
+            => User.FindFirstValue(ClaimTypes.Email) ?? throw new UnauthorizedAccessException("No email claim found");
     }
 }

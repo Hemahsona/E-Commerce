@@ -36,7 +36,11 @@ namespace E_Commerce.Infrastructure.DataSeeding
                     logger.LogInformation($"DataBAse already saved");
 
             }
-            catch { }
+            catch(Exception ex)
+            {
+                logger.LogError(ex, "An error occurred while seeding catalog data.");
+                return;
+            }
         }
         public async Task SeedIfEmptyAsync<T, TKey>(string rootPath, string fileName, CancellationToken ct) where T : BaseEntity<TKey>
         {
