@@ -25,7 +25,7 @@ namespace E_Commerce.Infrastructure.Repositories
 
             return (IRepository<TEntity, TKey>)repository;
         }
-        public Task<int> SaveChangesAsunc(CancellationToken ct)
+        public Task<int> SaveChangesAsync(CancellationToken ct)
             => dbContext.SaveChangesAsync(ct);
 
     }
