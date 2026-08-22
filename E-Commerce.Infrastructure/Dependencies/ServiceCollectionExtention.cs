@@ -5,6 +5,7 @@ using E_Commerce.Infrastructure.Data.Contect;
 using E_Commerce.Infrastructure.DataSeeding;
 using E_Commerce.Infrastructure.Identity.Data;
 using E_Commerce.Infrastructure.Identity.Entity;
+using E_Commerce.Infrastructure.Payments;
 using E_Commerce.Infrastructure.Repositories;
 using E_Commerce.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -102,7 +103,7 @@ namespace E_Commerce.Infrastructure.Dependencies
                 };
             });
 
-
+            services.AddSingleton<IPaymentGateway, StripePaymentGateway>();
             return services;
         }
 

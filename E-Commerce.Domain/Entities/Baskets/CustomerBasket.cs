@@ -8,5 +8,11 @@ namespace E_Commerce.Domain.Entities.Baskets
     {
         public string Id { get; set; } = default!; // created from frontend side [guid]
         public ICollection<BasketItem> Items { get; set; } = [];
+        public string? ClientSecret { get; set; }
+        public string? PaymentIntent { get; set; }
+        public int? DeliveryMethod { get; set; }
+        public decimal? ShippingPrice { get; set; }
+
+
     }
 }

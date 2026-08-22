@@ -1,5 +1,6 @@
 
 using E_Commerce.API.Extentions;
+using E_Commerce.Application.Common;
 using E_Commerce.Application.Dependencies;
 using E_Commerce.Domain.Contract;
 using E_Commerce.Infrastructure.Dependencies;
@@ -24,6 +25,7 @@ namespace E_Commerce.API
             builder.Services.AddControllers();
 
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JWT"));
+            builder.Services.Configure<PaymentGatewaySetting>(builder.Configuration.GetSection("Stripe"));
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             //builder.Services.AddOpenApi();
             //builder.Services.AddSwaggerGen();

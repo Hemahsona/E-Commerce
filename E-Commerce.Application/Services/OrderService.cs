@@ -22,10 +22,17 @@ namespace E_Commerce.Application.Services
             if(!basket.Items.Any())
                 return Error.Validation("Basket is empty", $"can not create order with basket id {orderDto.BasketId}.");
 
+            var existingOrder = await unitOfWork.Repository<Order, Guid>()
+                .GetByIdAsync(new PaymentIntentSpecifications(basket.PaymentIntent), ct);
+            if(existingOrder != null)
+                unitOfWork.Repository<Order, Guid>().Delete(existingOrder);
+
+
             var orderItem = new List<OrderItem>(basket.Items.Count);
             var productIds = basket.Items.Select(item => item.Id).ToHashSet();
             var productItem = (await unitOfWork.Repository<Product, int>()
                   .GetAllAsync(new ProductWithSpecifications(productIds), ct)).ToDictionary(p => p.Id);
+
             foreach (var item in basket.Items)
             {
                 if(!productItem.TryGetValue(item.Id, out var product))
@@ -59,7 +66,7 @@ namespace E_Commerce.Application.Services
 
             var subtotal = orderItem.Sum(item => item.Price * item.Quantity);
 
-            var order = new Order(email, orderAddress, orderItem, deliveryMethod, subtotal);
+            var order = new Order(email, orderAddress, orderItem, deliveryMethod, subtotal, basket.PaymentIntent);
             await unitOfWork.Repository<Order, Guid>().AddAsync(order);
             var result = await unitOfWork.SaveChangesAsync(ct);
             if(result == 0)

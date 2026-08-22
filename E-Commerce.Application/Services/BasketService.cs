@@ -16,6 +16,7 @@ namespace E_Commerce.Application.Services
             var customerBasket = new CustomerBasket
             {
                 Id = basket.Id,
+                DeliveryMethod = basket.DeliveryMethodId,
                 Items = basket.Items.Select(i => new BasketItem
                 {
                     Id = i.Id,

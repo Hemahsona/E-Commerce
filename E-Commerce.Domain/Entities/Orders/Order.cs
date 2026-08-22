@@ -14,15 +14,18 @@ namespace E_Commerce.Domain.Entities.Orders
             OrderAddress shipToAddress,
             ICollection<OrderItem> items,
             DeliveryMethod deliveryMethod,
-            decimal subTotal)
+            decimal subTotal,
+            string paymentIntentId)
         {
             BuyerEmail = buyerEmail;
             ShipToAddress = shipToAddress;
             Items = items;
             DeliveryMethod = deliveryMethod;
             SubTotal = subTotal;
+            PaymentIntentId = paymentIntentId;
         }
 
+        public string PaymentIntentId { get; set; }
         public string BuyerEmail { get; set; } = default!;
         public OrderAddress ShipToAddress { get; set; } = default!;
         public ICollection<OrderItem> Items { get; set; } = [];
