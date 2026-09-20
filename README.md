@@ -1,4 +1,4 @@
-[README.md](https://github.com/user-attachments/files/32432218/README.md)
+
 # E-Commerce
 
 A backend API for an e-commerce platform, built with ASP.NET Core on .NET 10 and organised around Clean Architecture. It covers the product catalog, authentication, Redis-backed baskets, order placement, and Stripe payments.
